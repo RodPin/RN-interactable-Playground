@@ -100,7 +100,7 @@ export default class Draglle extends Component {
                 alignSelf: "center"
               }}
             >
-              {"SIZE UP "}
+              + Size
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -113,8 +113,8 @@ export default class Draglle extends Component {
           >
             <Text
               style={{
-                color: "#32B76C",
-                borderColor: "#32B76C",
+                color: "red",
+                borderColor: "red",
                 borderWidth: 1,
                 padding: 6,
                 borderRadius: 15,
