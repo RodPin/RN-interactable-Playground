@@ -39,15 +39,39 @@ const Screen = {
   height: Dimensions.get("window").height
 };
 
+const COLORS = ["red", "blue", "green", "pink", "purple"];
+
 export default class Draglle extends Component {
   state = {
     width: 70,
-    height: 70
+    height: 70,
+    balls: [""]
   };
   render() {
-    const snapPoints = [{ x: 0, y: 0 }, { x: 30, y: 30 }];
     return (
       <View style={styles.container}>
+        <View style={{ flexDirection: "row" }}>
+          <StyledButton
+            onPress={() => {
+              this.setState({
+                width: this.state.width / 1.2,
+                height: this.state.height / 1.2
+              });
+            }}
+            label="- Size"
+            color="red"
+          />
+          <StyledButton
+            onPress={() => {
+              this.setState({
+                width: this.state.width * 1.2,
+                height: this.state.height * 1.2
+              });
+            }}
+            label="+ Size"
+            color="#3182C8"
+          />
+        </View>
         <Interactable.View
           style={{ zIndex: 2 }}
           ref="blue"
@@ -78,54 +102,7 @@ export default class Draglle extends Component {
             left: 50,
             zIndex: 1
           }}
-        >
-          <TouchableOpacity
-            // onPress={() => {
-            //   this.refs["blue"].changePosition(blueDestination);
-            // }}
-            onPress={() => {
-              this.setState({
-                width: this.state.width * 1.2,
-                height: this.state.height * 1.2
-              });
-            }}
-          >
-            <Text
-              style={{
-                color: "#3182C8",
-                borderColor: "#3182C8",
-                borderWidth: 1,
-                padding: 6,
-                borderRadius: 15,
-                alignSelf: "center"
-              }}
-            >
-              + Size
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              this.setState({
-                width: this.state.width / 1.2,
-                height: this.state.height / 1.2
-              });
-            }}
-          >
-            <Text
-              style={{
-                color: "red",
-                borderColor: "red",
-                borderWidth: 1,
-                padding: 6,
-                borderRadius: 15,
-                alignSelf: "center",
-                margin: 10
-              }}
-            >
-              - Size
-            </Text>
-          </TouchableOpacity>
-        </View>
+        />
       </View>
     );
   }
@@ -134,8 +111,25 @@ export default class Draglle extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "white"
+    justifyContent: "center"
   }
 });
+
+const StyledButton = ({ onPress, label, color }) => (
+  <TouchableOpacity onPress={onPress}>
+    <Text
+      style={{
+        color: color,
+        margin: 10,
+        borderColor: color,
+        borderWidth: 1,
+        padding: 6,
+        borderRadius: 15,
+        width: 60
+      }}
+    >
+      {label}
+    </Text>
+  </TouchableOpacity>
+);
