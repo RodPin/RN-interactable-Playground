@@ -72,28 +72,11 @@ export default class Draglle extends Component {
             color="#3182C8"
           />
         </View>
-        <Interactable.View
-          style={{ zIndex: 2 }}
-          ref="blue"
-          frictionAreas={[{ damping: 0.9 }]}
-          //edges limit
-          boundaries={{
-            left: -Screen.width / 2,
-            right: Screen.width / 2,
-            top: -Screen.height / 2,
-            bottom: Screen.height / 2
-          }}
-        >
-          <View
-            style={{
-              width: this.state.width,
-              height: this.state.height,
-              borderWidth: 2,
-              borderRadius: this.state.height,
-              backgroundColor: "#3182C8"
-            }}
-          />
-        </Interactable.View>
+        <StyledBall
+          color="#3182C8"
+          width={this.state.width}
+          height={this.state.height}
+        />
 
         <View
           style={{
@@ -132,4 +115,28 @@ const StyledButton = ({ onPress, label, color }) => (
       {label}
     </Text>
   </TouchableOpacity>
+);
+
+const StyledBall = ({ color, width, height }) => (
+  <Interactable.View
+    style={{ zIndex: 2 }}
+    frictionAreas={[{ damping: 0.9 }]}
+    //edges limit
+    boundaries={{
+      left: -Screen.width / 2,
+      right: Screen.width / 2,
+      top: -Screen.height / 2,
+      bottom: Screen.height / 2
+    }}
+  >
+    <View
+      style={{
+        width: width,
+        height: height,
+        borderWidth: 2,
+        borderRadius: height,
+        backgroundColor: color
+      }}
+    />
+  </Interactable.View>
 );
