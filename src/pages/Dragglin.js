@@ -39,7 +39,17 @@ const Screen = {
   height: Dimensions.get("window").height
 };
 
-const COLORS = ["red", "blue", "green", "pink", "purple"];
+const COLORS = [
+  "red",
+  "blue",
+  "green",
+  "pink",
+  "purple",
+  "grey",
+  "cyan",
+  "yellow",
+  "orange"
+];
 
 export default class Draglle extends Component {
   state = {
@@ -47,10 +57,23 @@ export default class Draglle extends Component {
     height: 70,
     balls: [""]
   };
+  renderBalls() {
+    var aux = [];
+    this.state.balls.map((x, i) => {
+      aux.push(
+        <StyledBall
+          color={COLORS[i]}
+          width={this.state.width}
+          height={this.state.height}
+        />
+      );
+    });
+    return aux;
+  }
   render() {
     return (
-      <View style={styles.container}>
-        <View style={{ flexDirection: "row" }}>
+      <View style={{ flex: 1 }}>
+        <View style={{ flexDirection: "row", position: "absolute" }}>
           <StyledButton
             onPress={() => {
               this.setState({
@@ -71,21 +94,26 @@ export default class Draglle extends Component {
             label="+ Size"
             color="#3182C8"
           />
+          <StyledButton
+            onPress={() => {
+              const balls = this.state.balls;
+              balls.push("");
+              this.setState({ balls });
+            }}
+            label="+ Balls"
+            color="green"
+          />
+          <StyledButton
+            onPress={() => {
+              const balls = this.state.balls;
+              balls.pop();
+              this.setState({ balls });
+            }}
+            label="- Balls"
+            color="purple"
+          />
         </View>
-        <StyledBall
-          color="#3182C8"
-          width={this.state.width}
-          height={this.state.height}
-        />
-
-        <View
-          style={{
-            position: "absolute",
-            top: 50,
-            left: 50,
-            zIndex: 1
-          }}
-        />
+        <View style={styles.container}>{this.renderBalls()}</View>
       </View>
     );
   }
