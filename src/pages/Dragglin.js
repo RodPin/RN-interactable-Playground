@@ -1,30 +1,3 @@
-// /**
-//  * Sample React Native App
-//  * https://github.com/facebook/react-native
-//  *
-//  * @format
-//  * @flow
-//  */
-
-// import React, { Component } from "react";
-// import { Platform, StyleSheet, Text, View } from "react-native";
-// import Main from "./src/components/Main";
-
-// export default class App extends Component {
-//   render() {
-//     return (
-//       <View
-//         style={{
-//           flex: 1,
-//           flexDirection: "column"
-//         }}
-//       >
-//         <Main />
-//       </View>
-//     );
-//   }
-// }
-
 import React, { Component } from "react";
 import {
   StyleSheet,
@@ -48,37 +21,47 @@ const COLORS = [
   "grey",
   "cyan",
   "yellow",
-  "orange"
+  "orange",
+  "black",
+  "white"
 ];
-
+const INITIAL_BALL = 70;
 export default class Draglle extends Component {
   state = {
-    width: 70,
-    height: 70,
-    balls: [""]
+    balls: [INITIAL_BALL],
+    selectedBall: 0
   };
   renderBalls() {
+    const { balls, selectedBall } = this.state;
     var aux = [];
     this.state.balls.map((x, i) => {
       aux.push(
         <StyledBall
+          key={i}
           color={COLORS[i]}
-          width={this.state.width}
-          height={this.state.height}
+          width={balls[i]}
+          height={balls[i]}
+          onPress={() => this.setState({ selectedBall: i })}
+          selected={selectedBall == i}
         />
       );
     });
     return aux;
   }
   render() {
+    const { balls, selectedBall } = this.state;
     return (
       <View style={{ flex: 1 }}>
         <View style={{ flexDirection: "row", position: "absolute" }}>
           <StyledButton
             onPress={() => {
+              var aux = balls;
+              console.log(selectedBall);
+              aux[selectedBall] = aux[selectedBall] / 1.1;
+              aux[selectedBall] = aux[selectedBall] / 1.1;
+              console.log(aux);
               this.setState({
-                width: this.state.width / 1.2,
-                height: this.state.height / 1.2
+                balls: aux
               });
             }}
             label="- Size"
@@ -86,9 +69,12 @@ export default class Draglle extends Component {
           />
           <StyledButton
             onPress={() => {
+              console.log(selectedBall);
+              var aux = balls;
+              aux[selectedBall] = aux[selectedBall] * 1.1;
+              aux[selectedBall] = aux[selectedBall] * 1.1;
               this.setState({
-                width: this.state.width * 1.2,
-                height: this.state.height * 1.2
+                balls: aux
               });
             }}
             label="+ Size"
@@ -97,7 +83,7 @@ export default class Draglle extends Component {
           <StyledButton
             onPress={() => {
               const balls = this.state.balls;
-              balls.push("");
+              balls.push(INITIAL_BALL);
               this.setState({ balls });
             }}
             label="+ Balls"
@@ -145,7 +131,7 @@ const StyledButton = ({ onPress, label, color }) => (
   </TouchableOpacity>
 );
 
-const StyledBall = ({ color, width, height }) => (
+const StyledBall = ({ color, width, height, selected, onPress }) => (
   <Interactable.View
     style={{ zIndex: 2 }}
     frictionAreas={[{ damping: 0.9 }]}
@@ -156,14 +142,16 @@ const StyledBall = ({ color, width, height }) => (
       top: -Screen.height / 2,
       bottom: Screen.height / 2
     }}
+    onDrag={onPress}
   >
     <View
       style={{
         width: width,
         height: height,
-        borderWidth: 2,
+        borderWidth: 3,
         borderRadius: height,
-        backgroundColor: color
+        backgroundColor: color,
+        borderColor: selected ? "#00ff00" : "white"
       }}
     />
   </Interactable.View>
